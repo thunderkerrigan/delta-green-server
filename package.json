@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "engines": {
-        "node": "^13.7.0",
+        "node": "^14.13.0",
         "npm": ">= 6.13.6",
         "yarn": ">= 1.22.0"
     },
@@ -14,8 +14,9 @@
         "dev": "concurrently \"yarn:build:dev\" \"yarn:start:dev\""
     },
     "dependencies": {
+        "delta-green-core": "1.0.0",
         "express": "^4.17.1",
-        "express-fileupload": "^1.2.0",
+        "express-fileupload": "^1.2.0"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.12.11",
