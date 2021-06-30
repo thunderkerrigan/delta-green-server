@@ -25,6 +25,7 @@ module.exports = {
       "lib/adapter/http.js"
     ),
   ],
+  externals: { express: "commonjs express", axios: "commonjs axios" },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
