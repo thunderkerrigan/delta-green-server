@@ -4,14 +4,30 @@ import { CharacterManager, CharacterModel } from "delta-green-core/src/index";
 const playerManager = new CharacterManager();
 const router = Router();
 
-router.get("/maleCharacter", (req: Request, res: Response): void => {
-  try {
-    const character = playerManager.randomMaleCharacter();
-    res.send(<CharacterModel>character);
-  } catch (e) {
-    console.log(e);
-    res.send(<boolean>false);
+router.get(
+  "/maleCharacter",
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const character = await playerManager.randomCharacter("male");
+      res.send(<CharacterModel>character);
+    } catch (e) {
+      console.log(e);
+      res.send(<boolean>false);
+    }
   }
-});
+);
+
+router.get(
+  "/femaleCharacter",
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const character = await playerManager.randomCharacter("female");
+      res.send(<CharacterModel>character);
+    } catch (e) {
+      console.log(e);
+      res.send(<boolean>false);
+    }
+  }
+);
 
 export default router;

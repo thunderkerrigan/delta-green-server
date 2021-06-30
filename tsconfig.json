@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2020",
     "module": "CommonJS",
     "jsx": "react-jsx",
-    "lib": ["es6", "dom"],
+    "lib": ["es2020"],
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,

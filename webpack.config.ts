@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
@@ -17,7 +18,13 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
-  plugins: [new NodePolyfillPlugin()],
+  plugins: [
+    new NodePolyfillPlugin(),
+    new webpack.NormalModuleReplacementPlugin(
+      /lib\/adapter\/xhr\.js/,
+      "lib/adapter/http.js"
+    ),
+  ],
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
