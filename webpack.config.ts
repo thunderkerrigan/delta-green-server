@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   mode: "development",
@@ -25,7 +26,23 @@ module.exports = {
       "lib/adapter/http.js"
     ),
   ],
-  externals: { express: "commonjs express", axios: "commonjs axios" },
+  externals: [
+    nodeExternals(),
+    {
+      // aws4: "commonjs aws4",
+      express: "commonjs express",
+      axios: "commonjs axios",
+      mquery: "commonjs mquery",
+      mongodb: "commonjs mongodb",
+      mongoose: "commonjs mongoose",
+      bcrypt: "commonjs bcrypt",
+      // path: "commonjs path",
+      // fs: "commonjs fs",
+      // "path-browserify": "commonjs path-browserify",
+    },
+  ],
+  // externals: [nodeExternals()],
+  externalsPresets: { node: true },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
