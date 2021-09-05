@@ -1,5 +1,5 @@
 export const config = {
-  jwtSecret: "$ci3nti@M0r53$t",
+  jwtSecret: process.env.SECRET,
   jwtSession: {
     session: false,
   },

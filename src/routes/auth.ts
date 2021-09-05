@@ -21,6 +21,8 @@ export const authenticateJWT = (
       cfg.jwtSecret,
       (err, user: JwtPayload & { username: string }) => {
         if (err) {
+          console.log(token);
+          console.log(err);
           return res.sendStatus(403);
         }
         req.user = user.username;

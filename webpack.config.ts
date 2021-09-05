@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development",
@@ -20,6 +21,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
+    new Dotenv(),
     new NodePolyfillPlugin(),
     new webpack.NormalModuleReplacementPlugin(
       /lib\/adapter\/xhr\.js/,
@@ -36,6 +38,7 @@ module.exports = {
       mongodb: "commonjs mongodb",
       mongoose: "commonjs mongoose",
       bcrypt: "commonjs bcrypt",
+      "socket.io": "commonjs socket.io",
       // path: "commonjs path",
       // fs: "commonjs fs",
       // "path-browserify": "commonjs path-browserify",

@@ -11,9 +11,8 @@ export const connect = () => {
   );
   const uri =
     "mongodb+srv://cluster0.drgxe.mongodb.net/delta-green?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
-  if (database) {
-    return;
-  }
+  if (database) return;
+
   Mongoose.connect(uri, {
     useNewUrlParser: true,
     useFindAndModify: true,
