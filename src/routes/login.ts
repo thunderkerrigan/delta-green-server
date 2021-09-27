@@ -44,7 +44,6 @@ router.get(
         res.send(true);
       }
     } catch (e) {
-      console.log(e);
       res.send(false);
     }
   }
@@ -54,14 +53,11 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
     const user = await UserModel.findByUsername(username);
     if (!user) {
-      console.log(req.body);
-      console.log(`utilisateur n\'existe pas: ${username}`);
       res.status(401).send("l'utilisateur ou le mot de passe n'existe pas.");
       return;
     }
     const isValid = await user.checkPassword(password);
     if (!isValid) {
-      console.log(`password invalide: ${password}`);
       res.status(401).send("l'utilisateur ou le mot de passe n'existe pas.");
       return;
     }
@@ -74,7 +70,6 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     );
     res.send(token);
   } catch (e) {
-    console.log(e);
     res.send(<boolean>false);
   }
 });
@@ -110,7 +105,6 @@ router.post("/signup", async (req: Request, res: Response): Promise<void> => {
     );
     res.send(token);
   } catch (e) {
-    console.log(e);
     res.send(<boolean>false);
   }
 });

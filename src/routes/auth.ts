@@ -12,17 +12,12 @@ export const authenticateJWT = (
   const authHeader = req.headers.authorization;
 
   if (authHeader && authHeader.toLowerCase().indexOf("bearer") === 0) {
-    console.log(authHeader);
-
     const token = authHeader.split(" ")[1];
-
     jwt.verify(
       token,
       cfg.jwtSecret,
       (err, user: JwtPayload & { username: string }) => {
         if (err) {
-          console.log(token);
-          console.log(err);
           return res.sendStatus(403);
         }
         req.user = user.username;

@@ -5,7 +5,7 @@ import { PORT } from "./config/constants";
 import CharacterRouter from "./routes/characters";
 import LoginRouter from "./routes/login";
 import { connect } from "./database/database";
-import "./socket";
+import "./DocumentSocket";
 connect();
 
 const app = express();

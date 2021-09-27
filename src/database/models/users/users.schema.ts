@@ -7,7 +7,8 @@ const UserSchema = new Schema<IUserDocument>(
   {
     username: { type: String, required: true },
     hashedPassword: String,
-    // characters: [],
+    characters: [Object],
+    currentCharacter: Number,
   },
   { timestamps: true }
 );
