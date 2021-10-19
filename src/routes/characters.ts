@@ -1,7 +1,11 @@
 import { Request, Response, Router } from "express";
-import { CharacterManager, CharacterModel } from "delta-green-core/src/index";
+import {
+  CharacterManager,
+  CharacterModel as CharacterInterface,
+} from "delta-green-core/src/index";
 import { authenticateJWT } from "./auth";
 import { UserModel } from "../database/models/users/users.model";
+import { CharacterModel } from "../database/models/characters/characters.model";
 import _ from "lodash";
 
 const playerManager = new CharacterManager();
@@ -12,7 +16,8 @@ router.get(
   async (req: Request, res: Response): Promise<void> => {
     try {
       const character = await playerManager.randomCharacter("male");
-      res.send(<CharacterModel>character);
+      const mongoCharacter = new CharacterModel(character);
+      res.send(<CharacterInterface>mongoCharacter);
     } catch (e) {
       console.log(e);
       res.send(<boolean>false);
@@ -25,7 +30,8 @@ router.get(
   async (req: Request, res: Response): Promise<void> => {
     try {
       const character = await playerManager.randomCharacter("female");
-      res.send(<CharacterModel>character);
+      const mongoCharacter = new CharacterModel(character);
+      res.send(<CharacterInterface>mongoCharacter);
     } catch (e) {
       console.log(e);
       res.send(<boolean>false);
@@ -43,7 +49,8 @@ router.get(
       const character = await playerManager.randomCharacter(
         requestedSeed as string
       );
-      res.send(<CharacterModel>character);
+      const mongoCharacter = new CharacterModel(character);
+      res.send(<CharacterInterface>mongoCharacter);
     } catch (e) {
       console.log(e);
       res.send(<boolean>false);
@@ -58,15 +65,13 @@ router.get(
       if (req.user) {
         const currentUser = await UserModel.findByUsername(req.user);
         if (currentUser.currentCharacter !== undefined) {
-          const character =
-            currentUser.characters[currentUser.currentCharacter];
-
-          res
-            .status(200)
-            .send({
-              charactersList: currentUser.characters,
-              currentSelectedCharacter: currentUser.currentCharacter,
-            });
+          const currentSelectedCharacter =
+            await currentUser.retrieveCharacter();
+          const charactersList = await currentUser.retrieveAllCharacters();
+          res.status(200).send({
+            charactersList,
+            currentSelectedCharacter,
+          });
         }
       }
     } catch (e) {
@@ -104,12 +109,48 @@ router.put(
 
       if (req.user && isProperlyFormated) {
         const currentUser = await UserModel.findByUsername(req.user);
+        const newCharacter = new CharacterModel(character);
         const { characters = [] } = currentUser;
-        characters.push(character);
+        characters.push(newCharacter._id);
         currentUser.characters = characters;
         console.log(characters);
         if (!currentUser.currentCharacter) {
-          currentUser.currentCharacter = currentUser.characters.length - 1;
+          currentUser.currentCharacter = newCharacter._id;
+        }
+        console.log(currentUser);
+
+        await newCharacter.save();
+        const newUser = await currentUser.save();
+        console.log(newUser);
+
+        res.send(<boolean>true);
+      }
+    } catch (error) {
+      console.log(error);
+      res.send(<boolean>false);
+    }
+  }
+);
+
+router.put(
+  "/remove",
+  authenticateJWT,
+  async (req: Request & { user?: string }, res: Response): Promise<void> => {
+    try {
+      const id = req.body;
+      const characterToDelete = await CharacterModel.findById(id);
+      if (req.user && characterToDelete) {
+        const currentUser = await UserModel.findByUsername(req.user);
+        const { characters = [] } = currentUser;
+        characters.filter((c) => c !== characterToDelete._id);
+        currentUser.characters = characters;
+        console.log(characters);
+        if (currentUser.currentCharacter === characterToDelete._id) {
+          if (currentUser.characters.length > 0) {
+            currentUser.currentCharacter = currentUser.characters[0];
+          } else {
+            currentUser.currentCharacter = undefined;
+          }
         }
         console.log(currentUser);
 

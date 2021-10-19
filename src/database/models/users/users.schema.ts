@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+import { CharacterModel } from "../characters/characters.model";
 import bcrypt from "bcrypt";
 
 import { IUserDocument } from "./users.types";
@@ -7,8 +8,17 @@ const UserSchema = new Schema<IUserDocument>(
   {
     username: { type: String, required: true },
     hashedPassword: String,
-    characters: [Object],
-    currentCharacter: Number,
+    characters: {
+      type: [Schema.Types.ObjectId],
+      ref: "characters",
+      default: [],
+    },
+    currentCharacter: {
+      type: Schema.Types.ObjectId,
+      ref: "characters",
+      nullable: true,
+      default: null,
+    },
   },
   { timestamps: true }
 );
@@ -22,6 +32,13 @@ UserSchema.methods.setPassword = async function (password: string) {
 UserSchema.methods.checkPassword = async function (password: string) {
   const result = await bcrypt.compare(password, this.hashedPassword);
   return result;
+};
+
+UserSchema.methods.retrieveAllCharacters = async function () {
+  return await CharacterModel.find().where("_id").in(this.characters);
+};
+UserSchema.methods.retrieveCharacter = async function () {
+  return await CharacterModel.findById(this.currentCharacter);
 };
 
 UserSchema.statics.findByUsername = function (username: string) {

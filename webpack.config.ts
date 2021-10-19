@@ -6,7 +6,7 @@ const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.ts",
+  entry: { index: "./src/index.ts" },
   target: "node",
   module: {
     rules: [
@@ -47,7 +47,7 @@ module.exports = {
   // externals: [nodeExternals()],
   externalsPresets: { node: true },
   output: {
-    filename: "bundle.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
   },
 };

@@ -1,11 +1,11 @@
 import express from "express";
 import fileUpload from "express-fileupload";
-// import { router as RealmImporterRouter } from './routes/realmImporter'
 import { PORT } from "./config/constants";
 import CharacterRouter from "./routes/characters";
 import LoginRouter from "./routes/login";
 import { connect } from "./database/database";
 import "./DocumentSocket";
+
 connect();
 
 const app = express();
