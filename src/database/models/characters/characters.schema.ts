@@ -16,7 +16,7 @@ const CharacterSchema = new Schema<ICharacterDocument>(
     employer: String,
     nationality: String,
     educationAndOccupationalHistory: String,
-    gender: Number,
+    gender: String,
     portrait: String,
     stats: Object,
     knowledgeSkills: Object,

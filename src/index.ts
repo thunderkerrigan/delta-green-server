@@ -5,8 +5,16 @@ import CharacterRouter from "./routes/characters";
 import LoginRouter from "./routes/login";
 import { connect } from "./database/database";
 import "./DocumentSocket";
+import { initializeApp, cert } from "firebase-admin/app";
 
 connect();
+const serviceAccount = require("../service-account-file.json");
+const credential = cert(serviceAccount);
+const defaultApp = initializeApp({
+  credential,
+  databaseURL:
+    "https://delta-green-toolbox-default-rtdb.europe-west1.firebasedatabase.app",
+});
 
 const app = express();
 app.use(express.json());
@@ -30,5 +38,5 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`server is listening on port ${PORT}`);
 });
 
-app.use("/api", CharacterRouter);
+app.use("/api/v1/character", CharacterRouter);
 app.use("/login", LoginRouter);

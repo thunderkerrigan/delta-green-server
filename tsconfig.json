@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "ESNext",
     "module": "CommonJS",
     "jsx": "react-jsx",
-    "lib": ["es2020"],
+    "lib": ["ESNext"],
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -12,6 +12,7 @@
     "experimentalDecorators": true,
     "outDir": "dist",
     "moduleResolution": "node",
+    "composite": true,
     "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -20,7 +21,9 @@
     // disable in prod
     "sourceMap": true,
     "declaration": true
+    // "declarationMap": true
   },
   "include": ["src"],
   "exclude": ["__test__", "./**/*.test.*"]
+  // "references": [{ "path": "../delta-green-core/src/index.ts" }]
 }
