@@ -1,12 +1,10 @@
 import { Request, Response, Router } from "express";
-import {
-  CharacterManager,
-  CharacterModel as CharacterInterface,
-} from "delta-green-core/src/index";
+
 import { authenticateJWT } from "./auth";
 import { UserModel } from "../database/models/users/users.model";
-import { CharacterModel } from "../database/models/characters/characters.model";
 import _ from "lodash";
+import { CharacterManager, CharacterModel as CharacterInterface } from "delta-green-core";
+import { CharacterModel } from "../database/models/characters/characters.model";
 
 const playerManager = new CharacterManager();
 const router = Router();

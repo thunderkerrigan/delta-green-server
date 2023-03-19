@@ -6,7 +6,7 @@ let database: Mongoose.Connection;
 export const connect = () => {
   // add your own uri below
   const credentials = fs.readFileSync(
-    path.resolve(__dirname, "../X509-cert-3399936409455469696.pem")
+    path.resolve(__dirname, process.env.MONGO_CERT_FILE)
   );
   const uri = process.env.MONGO_DATABASE_URL;
   if (database) return;
